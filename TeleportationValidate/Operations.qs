@@ -1,3 +1,6 @@
+// In this script lines 6-41 are obtained from the lines 12-55 of ReferenceImplementation.qs produces
+// by Microsoft available at https://github.com/microsoft/QuantumKatas/blob/master/Teleportation/ReferenceImplementation.qs
+
 namespace TeleportationValidate {
     
     open Microsoft.Quantum.Preparation;
