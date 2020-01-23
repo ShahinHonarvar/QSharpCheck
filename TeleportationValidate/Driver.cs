@@ -37,7 +37,7 @@ namespace TeleportationValidate {
             return (Math.PI / 180) * angle;
         }
 
-        static void AssertTelepoprted (int numberOfTestCases = 2, int confidenceLevel = 99, int numberOfMeasurement = 350, int trials = 300) {
+        static void AssertTelepoprted (int numberOfTestCases = 10, int confidenceLevel = 99, int numberOfMeasurement = 350, int trials = 300) {
 
             double significanceLevel = 100 - confidenceLevel;
             long lowerCriticalVal;
