@@ -1,0 +1,11 @@
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/bin/Debug/netcoreapp2.0/TeleportationValidate.deps.json
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/bin/Debug/netcoreapp2.0/TeleportationValidate.runtimeconfig.json
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/bin/Debug/netcoreapp2.0/TeleportationValidate.runtimeconfig.dev.json
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/bin/Debug/netcoreapp2.0/TeleportationValidate.dll
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/bin/Debug/netcoreapp2.0/TeleportationValidate.pdb
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/obj/Debug/netcoreapp2.0/TeleportationValidate.csprojAssemblyReference.cache
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/obj/Debug/netcoreapp2.0/TeleportationValidate.csproj.CoreCompileInputs.cache
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/obj/Debug/netcoreapp2.0/TeleportationValidate.AssemblyInfoInputs.cache
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/obj/Debug/netcoreapp2.0/TeleportationValidate.AssemblyInfo.cs
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/obj/Debug/netcoreapp2.0/TeleportationValidate.dll
+/var/autofs/home/s_home/sh726/Desktop/TeleportationValidate/obj/Debug/netcoreapp2.0/TeleportationValidate.pdb
