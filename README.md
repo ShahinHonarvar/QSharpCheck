@@ -20,4 +20,4 @@ Transform_Property;
 
 TransformState(q);
 
-\[AssertTransformed(q,(108,144)(0,360))\];
+\[AssertTransformed (q, (108,144) (0,360))\];
