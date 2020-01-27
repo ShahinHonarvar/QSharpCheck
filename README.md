@@ -23,6 +23,7 @@ When the test file is prepared, the "Tool" subfolder of "QSharpCheck 1.0" should
 Inside the terminal, the user should "cd" to the folder and then execute "dotnet run". Ultimately, the test outcome will be displayed. Following is an example of a test file written in compliance with the syntax grammer as described:
 
 Transform_Property;
+
 (10, 99, 500, 300);
 
 {q : Qubit (36,72)(0,360)};
