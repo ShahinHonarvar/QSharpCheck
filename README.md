@@ -18,7 +18,11 @@ In the last line, the corresponding built-in assertion as the precondition of th
 
 Any blank line between the written lines of the test file is irrelevant, also any number of white spaces between the characters of each line is meaningless. As an optional notation, each line can be also followed by a semicolon.
 
-When the test file is prepared, the "Tool" subfolder of "QSharpCheck 1.0" should be downloaded and then "test.txt" and the program under test must be placed in the same folder.
+.NET Core SDK 3.0 or higher should have been installed to run the test. The latest version is available at: https://dotnet.microsoft.com/download
+In addition, installation of the Microsoft Quantum Development Kit (QDK) is required. It is available for download from: https://docs.microsoft.com/en-us/quantum/install-guide/csinstall?view=qsharp-preview
+It is recommended to regularly update the Microsoft Quantum Development Kit (QDK). The istructions are available at: https://docs.microsoft.com/en-us/quantum/install-guide/update?view=qsharp-preview
+
+When the test file and the program to be tested are prepared, the "Tool" subfolder of "QSharpCheck 1.0" should be downloaded and then "test.txt" and the program under test must be placed in the same folder.
 
 Inside the terminal, the user should "cd" to the folder and then execute "dotnet run". Ultimately, the test outcome will be displayed. Following is an example of a test file written in compliance with the syntax grammer as described:
 
