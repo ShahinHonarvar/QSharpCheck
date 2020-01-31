@@ -37,8 +37,7 @@ namespace QSharpCheck
             StatisticalAnalyticsEngine sae = new StatisticalAnalyticsEngine();
             (theta, phi, sutName, assertionTypeName, numberOfTestCases, confidenceLevel, numberOfMeasurements,
                     numberOfExperiments, propertyName, (b1, b2)) =
-                testCaseGenerator.FileReader(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent +
-                                             "/test.txt");
+                testCaseGenerator.FileReader(Path.Combine (Environment.CurrentDirectory, "test.txt"));
 
             using (var qsim = new QuantumSimulator())
             {
