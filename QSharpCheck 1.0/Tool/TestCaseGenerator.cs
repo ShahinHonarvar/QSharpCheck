@@ -5,20 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-
 
 namespace QSharpCheck
 {
-    public class TestCaseGenerator
+    public static class TestCaseGenerator
     {
-        private static readonly Random random = new Random(DateTime.Now.Millisecond);
+        private static readonly Random R = new Random(DateTime.Now.Millisecond);
 
-        public (double theta, double phi, string sutName, string assertName, int testCasesNo, int confidence, int
-            measurements, int experiments, string propertyName, (int b1, int b2)) FileReader(string pathT)
+        public static (double minTheta1, double maxTheta1, double minPhi1, double maxPhi1,
+            double minTheta2, double maxTheta2, double minPhi2, double maxPhi2,
+            int testCasesNo, int confidence, int
+            measurements, int experiments, string propertyName, double proposedProbability, (int b1, int b2), double
+            minOfDestinationTheta, double maxOfDestinationTheta)
+            FileReader(string pathT)
         {
-            List<string> lines = new List<string>();
+            var lines = new List<string>();
             try
             {
                 lines = File.ReadAllLines(pathT).ToList();
@@ -30,48 +31,53 @@ namespace QSharpCheck
 
             lines.RemoveAll(string.IsNullOrWhiteSpace);
 
-            for (int i = 0; i < lines.Count; i++)
+            for (var i = 0; i < lines.Count; i++)
             {
                 lines[i] = lines[i].Replace(" ", "");
                 lines[i] = lines[i].Replace(";", "");
             }
 
-            List<int> testConditions = new List<int>();
-            string propertyName = lines[0];
+            var testConditions = new List<int>();
+            var propertyName = lines[0];
             int numberOfTestCases;
-            int confidenceLevel = 0;
-            int numberOfMeasurements = 0;
-            int numberOfExperiments = 0;
-            double minOfTheta = 0.0;
-            double maxOfTheta = 0.0;
-            double minOfPhi = 0.0;
-            double maxOfPhi = 0.0;
-            double minOfDestinationTheta = 0.0;
-            double maxOfDestinationTheta = 0.0;
-            double minOfDestinationPhi = 0.0;
-            double maxOfDestinationPhi = 0.0;
+            var confidenceLevel = 0;
+            var numberOfMeasurements = 0;
+            var numberOfExperiments = 0;
+            var angles = new List<double>();
+
 
             if (lines[1].StartsWith("("))
             {
                 lines[1] = lines[1].Replace("(", "");
                 lines[1] = lines[1].Replace(")", "");
-                string[] userArgs = lines[1].Split(",");
-                foreach (var element in userArgs)
-                {
-                    testConditions.Add(Convert.ToInt32(element));
-                }
-            }
-
-            if (testConditions.Count != 0)
-            {
+                var userArgs = lines[1].Split(",");
+                testConditions.AddRange(userArgs.Select(element => Convert.ToInt32(element)));
                 if (testConditions.Count == 1)
+                {
                     numberOfTestCases = testConditions[0];
+                    confidenceLevel = 99;
+                    numberOfMeasurements = 350;
+                    numberOfExperiments = 300;
+                }
                 else
                 {
                     numberOfTestCases = testConditions[0];
                     confidenceLevel = testConditions[1];
                     numberOfMeasurements = testConditions[2];
+                    if (numberOfMeasurements < 300)
+                    {
+                        Console.WriteLine(
+                            "The number of measurement should not be less than 300. Program will now close!");
+                        Environment.Exit(0);
+                    }
+
                     numberOfExperiments = testConditions[3];
+                    if (numberOfExperiments < 300)
+                    {
+                        Console.WriteLine(
+                            "The number of experiments should not be less than 300. Program will now close!");
+                        Environment.Exit(0);
+                    }
                 }
             }
             else
@@ -81,100 +87,136 @@ namespace QSharpCheck
                 numberOfMeasurements = 350;
                 numberOfExperiments = 300;
             }
-
-            foreach (string line in lines)
+            
+            var preCons = lines.Where(l => l.StartsWith('{')).ToList();
+            var postCons = lines.Where(l => l.StartsWith('[')).ToList();
+            
+            while (preCons.Count > 0)
             {
-                if (line.StartsWith("{") && line.Contains("Qubit"))
+                var line = preCons[0];
+                if (line.Contains("Qubit"))
                 {
-                    int begin0 = line.IndexOf("(", StringComparison.Ordinal);
-                    int end0 = line.IndexOf(")", StringComparison.Ordinal);
-                    if (line.Length - line.Replace("(", "").Length == 1)
-                    {
-                        string[] thetaRange = line.Substring(begin0 + 1,
-                            end0 - begin0 - 1).Split(",");
-                        minOfTheta = Convert.ToInt32(thetaRange[0]);
-                        maxOfTheta = Convert.ToInt32(thetaRange[1]);
-                    }
-                    else
-                    {
-                        int begin1 = line.LastIndexOf("(", StringComparison.Ordinal);
-                        int end1 = line.LastIndexOf(")", StringComparison.Ordinal);
-                        string[] thetaRange = line.Substring(begin0 + 1,
-                            end0 - begin0 - 1).Split(",");
-                        minOfTheta = Convert.ToDouble(thetaRange[0]);
-                        maxOfTheta = Convert.ToDouble(thetaRange[1]);
-                        string[] phiRange = line.Substring(begin1 + 1,
-                            end1 - begin1 - 1).Split(",");
-                        minOfPhi = Convert.ToDouble(phiRange[0]);
-                        maxOfPhi = Convert.ToDouble(phiRange[1]);
-                    }
+                    var begin0 = line.IndexOf('(');
+                    var end0 = line.IndexOf(')');
+                    var begin1 = line.LastIndexOf('(');
+                    var end1 = line.LastIndexOf(')');
+                    var thetaRange = line.Substring(begin0 + 1,
+                        end0 - begin0 - 1).Split(",");
+                    // order of adding: minOfTheta, maxOfTheta, minOfPhi, maxOfPhi
+                    angles.Add(Convert.ToDouble(thetaRange[0]));
+                    angles.Add(Convert.ToDouble(thetaRange[1]));
+                    var phiRange = line.Substring(begin1 + 1,
+                        end1 - begin1 - 1).Split(",");
+                    angles.Add(Convert.ToDouble(phiRange[0]));
+                    angles.Add(Convert.ToDouble(phiRange[1]));
+                    preCons.RemoveAt(0);
                 }
             }
-
-            string sutName = lines[3];
-            sutName = sutName.Remove(sutName.IndexOf("(", StringComparison.Ordinal));
-            string assertionTypeName = "";
-            foreach (string line in lines)
+            
+            while (postCons.Count > 0)
             {
-                if (line.StartsWith("["))
+                var end0 = postCons[0].IndexOf('(');
+                var assertionTypeName = postCons[0].Substring(1, end0 - 1);
+                if (assertionTypeName.Equals("AssertEqualClassicalBits"))
                 {
-                    int end0 = line.IndexOf("(", StringComparison.Ordinal);
-                    assertionTypeName = line.Substring(1, end0 - 1);
-                    if (assertionTypeName.Equals("AssertTeleported"))
-                    {
-                        int begin1 = line.IndexOf('(', line.IndexOf('(') + 1);
-                        int end1 = line.IndexOf(")", StringComparison.Ordinal);
-                        string[] destinationThetaRange = line.Substring(begin1 + 1,
-                            end1 - begin1 - 1).Split(",");
-                        int begin2 = line.IndexOf('(', begin1 + 1);
-                        int end2 = line.LastIndexOf(")", StringComparison.Ordinal) - 1;
-                        string[] destinationPhiRange = line.Substring(begin2 + 1,
-                            end2 - begin2 - 1).Split(",");
-                        minOfDestinationTheta = Convert.ToDouble(destinationThetaRange[0]);
-                        maxOfDestinationTheta = Convert.ToDouble(destinationThetaRange[1]);
-                        minOfDestinationPhi = Convert.ToDouble(destinationPhiRange[0]);
-                        maxOfDestinationPhi = Convert.ToDouble(destinationPhiRange[1]);
-                    }
+                    var (b1, b2) = RandomPairGenerator();
+                    return (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, numberOfTestCases, 0, 0, numberOfExperiments,
+                        propertyName, 0.0,
+                        (b1, b2), 0.0, 0.0);
                 }
+
+                if (assertionTypeName.Equals("AssertEntangled"))
+                {
+                    return (ToRadians(angles[0]), ToRadians(angles[1]), ToRadians(angles[2]), ToRadians(angles[3]),
+                        ToRadians(angles[4]), ToRadians(angles[5]), ToRadians(angles[6]), ToRadians(angles[7]),
+                        numberOfTestCases, confidenceLevel,
+                        numberOfMeasurements,
+                        numberOfExperiments, propertyName, 0.0, (0, 0), 0.0, 0.0);
+                }
+
+                if (assertionTypeName.Equals("AssertProbability"))
+                {
+                    var commaIndex = postCons[0].IndexOf(',');
+                    var length = postCons[0].Length - commaIndex - 2;
+                    var prob = postCons[0].Substring(commaIndex + 1, length - 1);
+                    var proposedProbability = Convert.ToDouble(prob);
+
+                    return (angles[0], angles[1], angles[2], angles[3],
+                        0.0, 0.0, 0.0, 0.0,
+                        numberOfTestCases, confidenceLevel,
+                        numberOfMeasurements,
+                        numberOfExperiments, propertyName, proposedProbability, (0, 0), 0.0, 0.0);
+                }
+
+                if (assertionTypeName.Equals("AssertTeleported"))
+                {
+                    return (angles[0], angles[1], angles[2], angles[3],
+                        0.0, 0.0, 0.0, 0.0,
+                        numberOfTestCases, confidenceLevel,
+                        numberOfMeasurements,
+                        numberOfExperiments, propertyName, 0.0, (0, 0), 0.0, 0.0);
+                }
+
+                if (assertionTypeName.Equals("AssertTransformed"))
+                {
+                    var begin1 = postCons[0].IndexOf('(', postCons[0].IndexOf('(') + 1);
+                    var end1 = postCons[0].IndexOf(')');
+                    var destinationThetaRange = postCons[0].Substring(begin1 + 1,
+                        end1 - begin1 - 1).Split(',');
+                    var begin2 = postCons[0].IndexOf('(', begin1 + 1);
+                    var end2 = postCons[0].LastIndexOf(')') - 1;
+                    var destinationPhiRange = postCons[0].Substring(begin2 + 1,
+                        end2 - begin2 - 1).Split(',');
+                    var minOfDestinationTheta = Convert.ToDouble(destinationThetaRange[0]);
+                    var maxOfDestinationTheta = Convert.ToDouble(destinationThetaRange[1]);
+                    var minOfDestinationPhi = Convert.ToDouble(destinationPhiRange[0]);
+                    var maxOfDestinationPhi = Convert.ToDouble(destinationPhiRange[1]);
+                    return (angles[0], angles[1], angles[2], angles[3],
+                        0.0, 0.0, 0.0, 0.0,
+                        numberOfTestCases, confidenceLevel,
+                        numberOfMeasurements,
+                        numberOfExperiments, propertyName, 0.0, (0, 0), minOfDestinationTheta,
+                        maxOfDestinationTheta);
+                }
+
+                if (assertionTypeName.Equals("AssertEqual"))
+                {
+                    return (angles[0], angles[1], angles[2], angles[3],
+                        angles[4], angles[5], angles[6], angles[7],
+                        numberOfTestCases, confidenceLevel,
+                        numberOfMeasurements,
+                        numberOfExperiments, propertyName, 0.0, (0, 0), 0.0, 0.0);
+                }
+
+                postCons.RemoveAt(0);
             }
 
-            return (ThetaGenerator(minOfTheta, maxOfTheta), PhiGenerator(minOfPhi, maxOfPhi), sutName,
-                assertionTypeName, numberOfTestCases, confidenceLevel, numberOfMeasurements, numberOfExperiments,
-                propertyName, RandomPairGenerator());
+            return (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, "", 0.0, (0, 0), 0.0, 0.0);
         }
 
-        static string GetAssemblyName()
+        private static double RandomDoubleNumberGenerator(double min, double max)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            return assembly.FullName.Remove(assembly.FullName.IndexOf(",", StringComparison.Ordinal));
+            return R.NextDouble() * (max - min) + min;
         }
 
-        static double RandomDoubleNumberGenerator(double min, double max)
+        private static double ToRadians(double degree)
         {
-            return random.NextDouble() * (max - min) + min;
+            return (Math.PI / 180.0) * degree;
         }
 
-        static double ToRadians(double angle)
+        public static double ThetaGenerator(double min = 0.0, double max = 180.0)
         {
-            return (Math.PI / 180) * angle;
+            return max == 0.0 ? 0.0 : ToRadians(RandomDoubleNumberGenerator(min, max));
         }
 
-        static double ThetaGenerator(double min = 0.0, double max = 180.0)
+        public static double PhiGenerator(double min = 0.0, double max = 360.0)
         {
-            return ToRadians(RandomDoubleNumberGenerator(min, max));
+            return max == 0.0 ? 0.0 : ToRadians(RandomDoubleNumberGenerator(min, max));
         }
 
-        static double PhiGenerator(double min = 0.0, double max = 360.0)
+        private static (int b1, int b2) RandomPairGenerator()
         {
-            return ToRadians(RandomDoubleNumberGenerator(min, max));
-        }
-
-        static (int b1, int b2) RandomPairGenerator()
-        {
-            int b1 = random.Next(2);
-            int b2 = random.Next(2);
-
-            return (b1, b2);
+            return (R.Next(2), R.Next(2));
         }
     }
 }
