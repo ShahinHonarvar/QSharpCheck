@@ -3,29 +3,19 @@
 
 namespace QSharpCheck {
     
-    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Measurement;
-    open Microsoft.Quantum.Math;
-    open Microsoft.Quantum.Convert;
-
-
-    newtype ProtocolMessage = (Bit1 : Bool, Bit2 : Bool);
     
-    operation Entangle (q1 : Qubit, q2 : Qubit) : Unit is Adj {
+    newtype ProtocolMessage = (Bit1 : Bool, Bit2 : Bool);
+
+    operation CreateEntangledPair_Reference (q1 : Qubit, q2 : Qubit) : Unit is Adj {
         
         H(q1);
         CNOT(q1, q2);
     }
     
-    operation EncodeMessage (qAlice : Qubit, message : ProtocolMessage) : Unit {
-
-        // "00" as I 
-        // "01" as X 
-        // "10" as Z 
-        // "11" as Y 
+    operation EncodeMessageInQubit_Reference (qAlice : Qubit, message : ProtocolMessage) : Unit {
         
-        // Also, since Y(q) = iX(Z(q)), we can express this shorter:
         if (message::Bit1) {
             Z(qAlice);
         }
@@ -34,21 +24,44 @@ namespace QSharpCheck {
             X(qAlice);
         }
     }
-  
-    operation DecodeMessage (qAlice : Qubit, qBob : Qubit) : ProtocolMessage {
+    
+    operation DecodeMessageFromQubits_Reference (qAlice : Qubit, qBob : Qubit) : ProtocolMessage {
         
-        Adjoint Entangle(qAlice, qBob);
+        Adjoint CreateEntangledPair_Reference(qAlice, qBob);
         return ProtocolMessage(MResetZ(qAlice) == One, MResetZ(qBob) == One);
     }
     
-    operation SuperdenseCoding (message : ProtocolMessage) : ProtocolMessage {
+    operation SuperdenseCodingProtocol_Reference (message : ProtocolMessage) : ProtocolMessage {
         
         using ((q1, q2) = (Qubit(), Qubit())) {
-            
-            Entangle(q1, q2);
-            EncodeMessage(q1, message);
-            
-            return DecodeMessage(q1, q2);            
+            CreateEntangledPair_Reference(q1, q2);
+            EncodeMessageInQubit_Reference(q1, message);
+            return DecodeMessageFromQubits_Reference(q1, q2);            
         }
+    }  
+              
+    operation SuperdenseCodingInvoke(b1 : Int , b2 : Int) : (Int,Int) {
+
+        mutable bit1 = false;
+        mutable bit2 = false;
+        mutable result1 = 0;
+        mutable result2 = 0;
+
+        if (b1==1) {
+            set bit1 = true;
+        }
+        if (b2==1) {
+            set bit2 = true;
+        }
+        let result = SuperdenseCodingProtocol_Reference(ProtocolMessage(bit1,bit2));
+
+        if (result::Bit1==true) {
+            set result1 = 1;
+        }
+        if (result::Bit2==true) {
+            set result2 = 1;
+        }
+
+        return (result1,result2);
     }
 }

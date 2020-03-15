@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-// Lines 49 to the end added to the Microsoft code for the purpose of testing
 
 namespace QSharpCheck {
     
@@ -45,7 +44,6 @@ namespace QSharpCheck {
         ReconstructMessage_Reference(qBob, classicalBits);
     }
 
-    
     operation SetAllToZero(register : Qubit[]) : Unit {
 
         for (i in 0..2){
@@ -56,23 +54,23 @@ namespace QSharpCheck {
     }
 
     // Measure the qubit received by Bob
-    operation Measurement (num : Int, theta : Double, phi : Double) : Int {
+    operation TeleportationInvoke (num : Int, theta : Double, phi : Double) : Int {
 
         mutable count = 0;
-        
+
         using (qubits = Qubit[3]){
 
             let qAlice   = qubits[0];
             let qBob     = qubits[1];
             let qMessage = qubits[2];
-            
+
             for (i in 1..num){
 
                 SetAllToZero(qubits);
                 Ry (theta, qMessage);
                 R1 (phi, qMessage);
 
-                StandardTeleport (qAlice, qBob, qMessage);
+                StandardTeleport_Reference  (qAlice, qBob, qMessage);
             
                 if(M(qBob)==Zero) {set count += 1;}
             }
