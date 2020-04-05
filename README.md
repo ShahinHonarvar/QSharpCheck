@@ -22,9 +22,9 @@ Any blank line between the written lines of the test file is irrelevant, also an
 In addition, installation of the Microsoft Quantum Development Kit (QDK) is required. It is available for download from: https://docs.microsoft.com/en-us/quantum/install-guide/csinstall?view=qsharp-preview
 It is recommended to regularly update the Microsoft Quantum Development Kit (QDK). The istructions are available at: https://docs.microsoft.com/en-us/quantum/install-guide/update?view=qsharp-preview
 
-When the test file and the program to be tested are prepared, the "Tool" subfolder of "QSharpCheck 1.0" should be downloaded and then "test.txt" and the program under test must be placed in the same folder.
+When the test file and the program to be tested are prepared, the contents of "Tool" subfolder of "QSharpCheck 1.0" should be downloaded and then "test.txt" and the program under test must be placed in the same folder.
 
-Inside the terminal, the user should "cd" to the folder and then execute "dotnet run". Ultimately, the test outcome will be displayed. Following is an example of a test file written in compliance with the syntax grammer as described:
+Inside the terminal, the user should "cd" to the folder and then execute "./run". Ultimately, the test outcome will be displayed. Following is an example of a test file written in compliance with the syntax grammer as described:
 
 Transform_Property;
 
