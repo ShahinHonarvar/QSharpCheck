@@ -1,0 +1,8 @@
+DenseCoding_Property
+
+{b1 : Bool}
+{b2 : Bool}
+
+SuperdenseCodingProtocol_Reference (b1 : Bool, b2 : Bool) : (Bool,Bool)
+
+[AssertEqualClassicalBits(b1,b2)]

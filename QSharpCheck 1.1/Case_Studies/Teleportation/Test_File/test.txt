@@ -1,0 +1,11 @@
+Teleportation_Property
+
+(10, 99, 350, 300)
+
+{qAlice : Qubit (0,0)(0,0)}
+{qBob : Qubit (0,0)(0,0)}
+{qMessage : Qubit (85,90)(0,90)}
+
+StandardTeleport_Reference (qAlice : Qubit, qBob : Qubit, qMessage : Qubit) : Unit
+
+[AssertTeleported(qMessage)]
