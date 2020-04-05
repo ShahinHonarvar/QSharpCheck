@@ -4,7 +4,7 @@ It is a generative-testing library (similar to QuickCheck for Haskell and Scalac
 QSharpCheck  is developed in C#;  however, we expect that its concept can be applied to other quantum programming languages.
 Below we provide a brief description of the structure of our package and also provide some instructions on how to install and use it.
 
-To test a program or an operation, initially a test script requires to be written. The file must be named "test.txt" and be written as follows:
+To test a program or an operation, initially it is required to write a test file complied with the QSharpCheck grammer. The file can have any arbitrary name however, its contents should be as follow:
 
 At the first line, a test property is given a name. E.g.: Transform_Property;
 
@@ -24,7 +24,7 @@ It is recommended to regularly update the Microsoft Quantum Development Kit (QDK
 
 When the test file and the program to be tested are prepared, the contents of "Tool" subfolder of "QSharpCheck 1.0" should be downloaded and then "test.txt" and the program under test must be placed in the same folder.
 
-Inside the terminal, the user should "cd" to the folder and then execute "./run". Ultimately, the test outcome will be displayed. Following is an example of a test file written in compliance with the syntax grammer as described:
+Inside the terminal, the user should "cd" to the folder and then execute "./run \<test file name including its extension\>". Susequently, "TestExecutionEngine.cs" and "TestQSharpOperation.qs" will be generated in the QSharpCheck namespace. Ultimately, the test outcome will be displayed. Following is an example of a test file written in compliance with the syntax grammer as described:
 
 Transform_Property;
 
