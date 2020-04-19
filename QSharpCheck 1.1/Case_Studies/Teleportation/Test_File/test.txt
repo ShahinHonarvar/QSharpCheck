@@ -4,7 +4,7 @@ Teleportation_Property
 
 {qAlice : Qubit (0,0)(0,0)}
 {qBob : Qubit (0,0)(0,0)}
-{qMessage : Qubit (85,90)(0,90)}
+{qMessage : Qubit (0,180)(0,360)}
 
 StandardTeleport_Reference (qAlice : Qubit, qBob : Qubit, qMessage : Qubit) : Unit
 
