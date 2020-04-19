@@ -6,15 +6,15 @@ Below we provide a brief description of the structure of our package and also pr
 
 To test a program or an operation, initially it is required to write a test file complied with the QSharpCheck grammer. The file can have any arbitrary name however, its contents should be as follow:
 
-At the first line, a test property is given a name. E.g.: Transform_Property;
+At the first line, a test property is given a name. E.g.: `Transform_Property;`
 
-At the next line, parameters used for test case generation, execution, and analysis are provided and in order, they are the number of concrete test-cases to be generated from the property (i.e., instantiation of variables used in the property); the statistical confidence level for the property to hold (in test analysis); and the number of experiments and measurements (test executions) for each concrete test case to obtain the data for statistical tests. Note that the first and the last parameters are semantically different: the first parameter refers to the number of generated concrete test cases from each abstract property and the last parameter refers to the number of experiments and measurements performed for each concrete test case. For instance, (10, 99, 500, 300);
+At the next line, parameters used for test case generation, execution, and analysis are provided and in order, they are the number of concrete test-cases to be generated from the property (i.e., instantiation of variables used in the property); the statistical confidence level for the property to hold (in test analysis); and the number of experiments and measurements (test executions) for each concrete test case to obtain the data for statistical tests. Note that the first and the last parameters are semantically different: the first parameter refers to the number of generated concrete test cases from each abstract property and the last parameter refers to the number of experiments and measurements performed for each concrete test case. For instance, `(10, 99, 500, 300);`
 
-The input data type of the test followed by a given interval is indicated at the next line as precondition for the test. It is necessary to put the precondition inside { }. E.g.: {q : Qubit (36,72)(0,360)};
+The input data type of the test followed by a given interval is indicated at the next line as precondition for the test. It is necessary to put the precondition inside { }. E.g.: `{q : Qubit (36,72)(0,360)};`
 
-In the following line, the name of the Q# process or program under test is provided. E.g: TransformState(q);
+In the following line, the name of the Q# process or program under test is provided. E.g: `TransformState(q);`
 
-In the last line, the corresponding built-in assertion as the precondition of the test is specified. It is required to put the postcondition inside \[ \]. E.g: \[AssertTransformed (q , (108,144)(0,360))\];
+In the last line, the corresponding built-in assertion as the precondition of the test is specified. It is required to put the postcondition inside \[ \]. E.g: `\[AssertTransformed (q , (108,144)(0,360))\];`
 
 Any blank line between the written lines of the test file is irrelevant, also any number of white spaces between the characters of each line is meaningless. As an optional notation, each line can be also followed by a semicolon.
 
@@ -22,9 +22,9 @@ Any blank line between the written lines of the test file is irrelevant, also an
 In addition, installation of the Microsoft Quantum Development Kit (QDK) is required. It is available for download from: https://docs.microsoft.com/en-us/quantum/install-guide/csinstall?view=qsharp-preview
 It is recommended to regularly update the Microsoft Quantum Development Kit (QDK). The istructions are available at: https://docs.microsoft.com/en-us/quantum/install-guide/update?view=qsharp-preview
 
-When the test file and the program to be tested are prepared, the contents of "Tool" subfolder of "QSharpCheck 1.0" should be downloaded and then "test.txt" and the program under test must be placed in the same folder.
+When the test file and the program to be tested are prepared, the contents of "Tool" subfolder of "QSharpCheck 1.1" should be downloaded and then "test.txt" and the program under test must be placed in the same folder.
 
-Inside the terminal, the user should "cd" to the folder and then execute "./run \<test file name including its extension\>". Susequently, "TestExecutionEngine.cs" and "TestQSharpOperation.qs" will be generated in the QSharpCheck namespace. Ultimately, the test outcome will be displayed. Following is an example of a test file written in compliance with the syntax grammer as described:
+Inside the terminal, the user should "cd" to the folder and then execute `./run \<test file name including its extension\>`. Susequently, "TestExecutionEngine.cs" and "TestQSharpOperation.qs" will be generated in the QSharpCheck namespace. Ultimately, the test outcome will be displayed. Following is an example of a test file written in compliance with the syntax grammer as described:
 ```
 Transform_Property;
 
