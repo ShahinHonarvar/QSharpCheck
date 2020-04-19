@@ -14,7 +14,7 @@ The input data type of the test followed by a given interval is indicated at the
 
 In the following line, the name of the Q# process or program under test is provided. E.g: `TransformState(q);`
 
-In the last line, the corresponding built-in assertion as the precondition of the test is specified. It is required to put the postcondition inside \[ \]. E.g: `\[AssertTransformed (q , (108,144)(0,360))\];`
+In the last line, the corresponding built-in assertion as the precondition of the test is specified. It is required to put the postcondition inside \[ \]. E.g: `[AssertTransformed (q , (108,144)(0,360))];`
 
 Any blank line between the written lines of the test file is irrelevant, also any number of white spaces between the characters of each line is meaningless. As an optional notation, each line can be also followed by a semicolon.
 
@@ -24,7 +24,7 @@ It is recommended to regularly update the Microsoft Quantum Development Kit (QDK
 
 When the test file and the program to be tested are prepared, the contents of "Tool" subfolder of "QSharpCheck 1.1" should be downloaded and then "test.txt" and the program under test must be placed in the same folder.
 
-Inside the terminal, the user should "cd" to the folder and then execute `./run \<test file name including its extension\>`. Susequently, "TestExecutionEngine.cs" and "TestQSharpOperation.qs" will be generated in the QSharpCheck namespace. Ultimately, the test outcome will be displayed. Following is an example of a test file written in compliance with the syntax grammer as described:
+Inside the terminal, the user should "cd" to the folder and then execute `./run <test file name including its extension>`. Susequently, "TestExecutionEngine.cs" and "TestQSharpOperation.qs" will be generated in the QSharpCheck namespace. Ultimately, the test outcome will be displayed. Following is an example of a test file written in compliance with the syntax grammer as described:
 ```
 Transform_Property;
 
@@ -34,5 +34,5 @@ Transform_Property;
 
 TransformState(q);
 
-\[AssertTransformed (q, (108,144) (0,360))\];
+[AssertTransformed (q, (108,144) (0,360))];
 ```
