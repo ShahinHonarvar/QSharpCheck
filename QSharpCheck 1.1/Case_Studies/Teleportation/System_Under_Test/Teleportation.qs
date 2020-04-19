@@ -11,14 +11,14 @@ namespace QSharpCheck {
     
     operation Teleport(msg : Qubit, here : Qubit, there : Qubit) : Unit {
 
-            H(here); // here
+            H(here);
             CNOT(here, there);
 
             CNOT(msg, here);
-            H(msg); // msg
+            H(msg);
 
-            if (M(msg) == One)  { Z(there);} // Z
-            if (M(here) == One) { X(there); } // X
+            if (M(msg) == One)  { Z(there);}
+            if (M(here) == One) { X(there); }
 
     }
 }
