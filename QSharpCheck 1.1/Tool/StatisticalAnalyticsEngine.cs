@@ -22,6 +22,8 @@ namespace QSharpCheck
             var lowerCriticalVal = Bn.QBinom(significanceLevel / 200.0, numberOfMeasurements, probability, true);
             var upperCriticalVal = Bn.QBinom(significanceLevel / 200.0, numberOfMeasurements, probability, false);
 
+            Console.WriteLine(
+                $"lowerCriticalVal: {lowerCriticalVal}\t upperCriticalVal: {upperCriticalVal}\t mean: {mean}");
             return lowerCriticalVal <= mean && mean <= upperCriticalVal;
         }
 

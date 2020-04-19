@@ -63,11 +63,11 @@ namespace QSharpCheck
                 while (true)
                 {
                     dBinomResult += DBinom(criticalVal, n, p);
-                    if (dBinomResult == 0)
-                    {
-                        criticalVal += n;
-                        break;
-                    }
+                    // if (dBinomResult == 0)
+                    // {
+                    //     criticalVal += n;
+                    //     break;
+                    // }
 
                     if (dBinomResult >= significanceLevel) break;
                     criticalVal++;

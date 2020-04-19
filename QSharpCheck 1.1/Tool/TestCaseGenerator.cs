@@ -8,13 +8,13 @@ namespace QSharpCheck
     public static class TestCaseGenerator
     {
         private static readonly Random R = new Random(DateTime.Now.Millisecond);
-        
+
         private static double RandomDoubleNumberGenerator(double min, double max)
         {
             return R.NextDouble() * (max - min) + min;
         }
 
-        private static double ToRadians(double degree)
+        public static double ToRadians(double degree)
         {
             return (Math.PI / 180.0) * degree;
         }
