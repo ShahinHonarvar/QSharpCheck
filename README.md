@@ -10,7 +10,7 @@ The required operating system is either Linux or macOS. Also, .NET Core SDK 3.0 
 https://dotnet.microsoft.com/download \
 In addition, installation of the Microsoft Quantum Development Kit (QDK) is required. It is available for download from:\
 https://docs.microsoft.com/en-us/quantum/install-guide/ \
-It is recommended to regularly update the Microsoft Quantum Development Kit (QDK). The istructions are available at:\
+It is recommended to regularly update the Microsoft Quantum Development Kit (QDK). The instructions are available at:\
 https://docs.microsoft.com/en-us/quantum/install-guide/update?view=qsharp-preview
 
 
