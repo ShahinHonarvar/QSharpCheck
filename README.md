@@ -1,7 +1,7 @@
 # QSharpCheck
 QSharpCheck is a property-based testing framework of quantum programs in Q#. It is a generative-testing library (similar to QuickCheck for Haskell and Scalacheck for Scala) to randomise inputs and perform statistical check to test the defined properties.
 QSharpCheck is developed in C#; however, we expect that its concept can be applied to other quantum programming languages. The corresponding research paper is accessible via:\
-https://bit.ly/3e3SzSr \
+https://doi.org/10.1145/3387940.3391459 \
 Below we provide a brief description of the structure of our package and also provide some instructions on how to install and use it.
 
 
